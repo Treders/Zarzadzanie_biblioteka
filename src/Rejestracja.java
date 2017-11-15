@@ -8,13 +8,19 @@
  *
  * @author Adam
  */
-public class Rejestracja extends javax.swing.JPanel {
+import java.sql.*;
+import javax.swing.JOptionPane;
+public class Rejestracja extends javax.swing.JFrame {
+    
+Connection conn;
+ResultSet rs;
+PreparedStatement pst;
+  
 
-    /**
-     * Creates new form Rejestracja
-     */
     public Rejestracja() {
-        initComponents();
+        super("Logowanie");
+         initComponents();
+         conn=JavaConnect.ConnecrDb();
     }
 
     /**
@@ -42,8 +48,13 @@ public class Rejestracja extends javax.swing.JPanel {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 153, 102), 2, true), "Rejestracja", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("sansserif", 1, 24), new java.awt.Color(0, 0, 153))); // NOI18N
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/save-24.png"))); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Ikony/create_new-24.png"))); // NOI18N
         jButton1.setText("Utwórz");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         jLabel2.setText("Nazwa użytkownika");
@@ -58,8 +69,13 @@ public class Rejestracja extends javax.swing.JPanel {
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Jaki jest twój ulubiony kolor ?", "Jakie jest twoje ulubione zwierzę ?", "Jaką nazwę nosi twoja szkoła ?" }));
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/backspace-36.png"))); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Ikony/backspace-24.png"))); // NOI18N
         jButton2.setText(" Wróć");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         jLabel4.setText("Pytanie zabezpieczające");
@@ -145,6 +161,29 @@ public class Rejestracja extends javax.swing.JPanel {
                 .addContainerGap(18, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+           String sql="Insert into Konto (Nazwa użytkownika,Imię,Hasło,Pytanie bezpieczeństwa,Odpowiedź) values (?,?,?,?,?)";
+           pst=conn.prepareStatement(sql);
+           pst.setString(1, jTextField1.getText());
+           pst.setString(2, jTextField2.getText());
+           pst.setString(3, jTextField3.getText());
+           pst.setString(4, (String)jComboBox1.getSelectedItem());
+           pst.setString(5, jTextField5.getText());
+           pst.execute();
+           JOptionPane.showMessageDialog(null, "Nowe konto zostało stworzone");
+           rs.close();
+           pst.close();
+        }catch(Exception e){
+        JOptionPane.showMessageDialog(null, e);}
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        setVisible(false);
+        Logowanie ob=new Logowanie();
+        ob.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
